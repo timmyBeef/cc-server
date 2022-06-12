@@ -18,7 +18,19 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "typecheck": "tsc --project tsconfig.json --pretty --noEmit",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "prepare": "husky install",
+    "pre-commit": "npm run format && npm run typecheck && npm test && npx --no-install lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,json,md}": [
+      "git add ."
+    ],
+    "*.{js,jsx,ts,tsx}": [
+      "npm run lint",
+      "git add ."
+    ]
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -29,6 +41,8 @@
     "rxjs": "^7.2.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.2",
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
@@ -41,8 +55,10 @@
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^8.0.1",
     "jest": "28.0.3",
-    "prettier": "^2.3.2",
+    "lint-staged": "^13.0.1",
+    "prettier": "2.6.2",
     "source-map-support": "^0.5.20",
     "supertest": "^6.1.3",
     "ts-jest": "28.0.1",
